@@ -1,0 +1,15 @@
+version: '3.9'
+
+networks:
+  service1:
+
+
+services:
+  django:
+    image: django-docker:0.0.1
+    build: .
+    ports:
+      - "8000:8000"
+      
+    links:
+      - flask-docker
