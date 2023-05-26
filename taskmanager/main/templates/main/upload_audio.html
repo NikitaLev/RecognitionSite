@@ -5,11 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-<form action="#" method="POST" enctype="multipart/form-data">
+<form method="POST" class="post-form" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.Song }}
-    <button class="btn btn-primary btn-sm" type="submit">Upload</button>
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Save</button>
 </form>
-</div>
 {% endblock %}
