@@ -68,6 +68,39 @@ def out_audio(request):
 
 
 def tts(request):
+    if request.method == 'POST':
+        audio = Song(request.POST, request.FILES)
+        if audio.is_valid():
+            lang = audio.cleaned_data['lang']
+            model = audio.cleaned_data['model']
+            version = audio.cleaned_data['version']
+            sample_rate = audio.cleaned_data['sample_rate']
+            
+            config = {
+                "model": "{}".format(model),
+                "version": version,
+                "lang": "{}".format(lang),
+                "sample_rate": sample_rate
+            }
+            print(request)
+            file = request.FILES['file'].read()
+            data = {
+                'config':config,
+                'file': file
+            }
+            response = requests.post('http://web_api-flask-1:5000/v1/stt', files={'file': file}, data=config)
+            data = {'src': file,
+                    'text': response.text}
+            return render(request, "out_audio.html", data)
+        else:
+            data = {'text': 'error'}
+            return render(request, "out_audio.html",data)
+    else:
+        student = Song()
+        return render(request, "index.html", {'form': student})
+
+
+def stt(request):
     if request.method == 'GET':
         student = ConfigTTS()
         return render(request, "index.html", {'form': student})
