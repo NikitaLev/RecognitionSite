@@ -34,7 +34,7 @@ def index(request):
                 'config':config,
                 'file': file
             }
-            response = requests.post('http://web_api-flask-1:5000/stt', files={'file': file}, data=config)
+            response = requests.post('http://web_api-flask-1:5000/v1/stt', files={'file': file}, data=config)
             data = {'src': file,
                     'text': response.text}
             return render(request, "out_audio.html", data)
@@ -72,7 +72,7 @@ def tts(request):
         student = ConfigTTS()
         return render(request, "index.html", {'form': student})
     else:
-        url = "http://web_api-flask-1:5000/tts"
+        url = "http://web_api-flask-1:5000/v1/tts"
         logger.critical('nor this')
         form = ConfigTTS(request.POST)
         choice1=''
